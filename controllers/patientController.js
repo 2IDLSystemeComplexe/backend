@@ -1,11 +1,12 @@
 const Patient = require('../models/Patient');
+const User = require('../models/Users');
 const Appointment = require('../models/Appointment');
 const bcrypt = require('bcryptjs');
 
 // Get all patients
 exports.getAllPatients = async (req, res) => {
   try {
-    const patients = await Patient.find().populate('appointments');
+    const patients = await Patient.find();
     res.json(patients);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -15,13 +16,18 @@ exports.getAllPatients = async (req, res) => {
 // Get patient by ID
 exports.getPatientById = async (req, res) => {
   try {
-    const patient = await Patient.findById(req.params.id).populate('appointments');
-    if (!patient) return res.status(404).json({ message: 'Patient not found' });
+    const patient = await Patient.findById(req.params.id);
+
+    if (!patient) {
+      return res.status(404).json({ message: 'Patient not found' });
+    }
+
     res.json(patient);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
 };
+
 
 // Create new patient
 exports.createPatient = async (req, res) => {
@@ -51,11 +57,24 @@ exports.updatePatient = async (req, res) => {
 };
 
 // Delete patient
+
 exports.deletePatient = async (req, res) => {
   try {
-    await Patient.findByIdAndDelete(req.params.id);
-    res.json({ message: 'Patient deleted' });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    // Trouver le patient
+    const patient = await Patient.findById(req.params.id);
+    if (!patient) {
+      return res.status(404).json({ message: 'Patient not found' });
+    }
+
+    // Supprimer les rendez-vous liés à ce patient
+    await Appointment.deleteMany({ patient: patient._id });
+
+    // Supprimer le patient
+    await Patient.findByIdAndDelete(patient._id);
+
+    res.status(200).json({ message: 'Patient and related appointments deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
+

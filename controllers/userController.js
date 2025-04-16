@@ -89,6 +89,22 @@ exports.resetPassword =async (req, res) => {
   res.json({ message: 'Password successfully reset' });
 }
 
+exports.getUsersByRole = async (req, res) => {
+  const { role } = req.body;
+
+  if (!role) {
+    return res.status(400).json({ error: 'Role is required' });
+  }
+
+  try {
+    const users = await User.find({ role });
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+
 exports.profile = (req, res) => {
   res.json({ message: 'Authenticated', user: req.user });
 };
