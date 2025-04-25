@@ -1,13 +1,15 @@
 const mongoose = require('mongoose');
 const User = require('./Users');
-const Appointment = require('./Appointment'); // 👈 Import
+const Appointment = require('./Appointment'); 
 
 const doctorSchema = new mongoose.Schema({
   specialization: String,
   image: { type: String }, 
   degree: { type: String }, 
-  experience: { type: Number },
+  experience: { type: String },
   phone: String,
+  fees: { type: Number },
+  description: { type: String },
   localisation: {
     street: { type: String, required: true },
     city: { type: String, required: true }
