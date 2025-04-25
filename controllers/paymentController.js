@@ -13,6 +13,7 @@ exports.Payment =async (req, res) => {
       },
     });
 
+
     res.send({
       clientSecret: paymentIntent.client_secret,
     });
@@ -21,3 +22,4 @@ exports.Payment =async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 }
+
