@@ -27,8 +27,8 @@ app.use('/api/appointment', appointmentRoutes );
 app.use('/api/doctor', doctorRoutes);
 app.use('/api/pharmacist', pharmacistRoutes);
 app.use('/api/patients',patientRoutes);
-app.use('/api/payment',paymentRoutes);
-app.use('/api/consultations',consultationRoutes);
+// app.use('/api/payment',paymentRoutes);
+// app.use('/api/consultations',consultationRoutes);
 app.use('/api/prescription',prescriptionRoutes);
 
 app.listen(PORT, () => {
