@@ -7,7 +7,6 @@ const doctorRoutes = require('./routes/doctorRoute');
 const pharmacistRoutes = require('./routes/pharmacistRoutes');
 const patientRoutes=require('./routes/patientRoutes');
 const paymentRoutes =require('./routes/paymentRoutes');
-const consultationRoutes = require('./routes/consultationRoutes');
 const prescriptionRoutes = require('./routes/prescriptionRoutes');
 const cors =require ('cors');
 
@@ -28,7 +27,6 @@ app.use('/api/doctor', doctorRoutes);
 app.use('/api/pharmacist', pharmacistRoutes);
 app.use('/api/patients',patientRoutes);
 app.use('/api/payment',paymentRoutes);
-app.use('/api/consultations',consultationRoutes);
 app.use('/api/prescription',prescriptionRoutes);
 
 app.listen(PORT, () => {

@@ -34,6 +34,10 @@ const appointmentSchema = new mongoose.Schema({
   videoCallLink :{
     type:String,
     default:'https://meet.jit.si/consultation-'
+  },
+  payement : {
+    type: Boolean,
+    default: false
   }
 });
 
