@@ -9,11 +9,15 @@ const patientRoutes=require('./routes/patientRoutes');
 const paymentRoutes =require('./routes/paymentRoutes');
 const consultationRoutes = require('./routes/consultationRoutes');
 const prescriptionRoutes = require('./routes/prescriptionRoutes');
+const cors =require ('cors');
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+app.use(cors({
+  origin: 'http://localhost:5173'               
+}));
 
 connectDB();
 app.use(express.json());

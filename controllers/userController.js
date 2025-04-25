@@ -3,9 +3,11 @@ const User = require('../models/Users');
 const Patient = require('../models/Patient');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
 const SECRET_KEY = process.env.SECRET_KEY;
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
+const role = require('../middleware/role');
 
 exports.register = async (req, res) => {
   const { username, email, password } = req.body;
@@ -30,9 +32,11 @@ exports.login = async (req, res) => {
     if (!isMatch) return res.status(401).json({ error: 'Invalid credentials' });
 
     const token = jwt.sign({ userId: user._id, email: user.email }, SECRET_KEY, { expiresIn: '1h' });
-    res.json({ message: 'Login successful', token });
+    res.json({ message: 'Login successful', token, user });
   } catch (err) {
     res.status(500).json({ error: 'Server error' });
+    console.log(err);
+    console.log(SECRET_KEY);
   }
 };
 

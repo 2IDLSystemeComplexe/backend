@@ -1,8 +1,11 @@
 const Doctor = require('../models/Doctor');
 const Appointment =  require('../models/Appointment');
+const bcrypt = require('bcryptjs');
 exports.createDoctor= async (req, res) => {
   try {
     const newDoctor = new Doctor(req.body);
+    const hashedPassword = await bcrypt.hash(newDoctor.password, 10);
+    newDoctor.password=hashedPassword;
     const savedDoctor = await newDoctor.save();
     res.status(201).json(savedDoctor);
   } catch (err) {
@@ -12,12 +15,29 @@ exports.createDoctor= async (req, res) => {
 
 exports.getDoctorsList= async (req, res) => {
     try {
-      const doctors = await Doctor.find().populate('users');
+      const doctors = await Doctor.find();
       res.json(doctors);
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
 };
+//getDoctorByCity
+
+exports.getDoctorsByCity = async(req, res) => {
+  const { city } = req.params;
+  try{
+    const filter = {};
+    if (city) {
+      filter['localisation.city'] = city;
+    }
+    const doctors = await Doctor.find(filter);
+    res.status(200).json(doctors);
+}catch (err) {
+  console.error('Erreur lors de la récupération des docteurs:', err);
+  res.status(500).json({ message: 'Erreur serveur' });
+}
+};
+
 
 
 exports.getDoctorsBySpeciality = async (req, res) => {
@@ -33,6 +53,34 @@ exports.getDoctorsBySpeciality = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+//CityAndSpec
+exports.getDoctorsByCityAndSpeciality = async (req, res) => {
+const { city, specialization } = req.params; // utilisation de query params
+
+  try {
+    const filter = {};
+
+    if (city) {
+      filter['localisation.city'] = city;
+    }
+
+    if (specialization) {
+      filter.specialization = specialization;
+    }
+
+    const doctors = await Doctor.find(filter);
+
+    if (!doctors || doctors.length === 0) {
+      return res.status(404).json({ message: 'Aucun docteur trouvé avec ces critères' });
+    }
+
+    res.status(200).json(doctors);
+  } catch (err) {
+    console.error('Erreur lors de la récupération des docteurs:', err);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+};
+
 //getById
 
 exports.getDoctorById = async (req, res) => {

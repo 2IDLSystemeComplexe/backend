@@ -1,24 +1,15 @@
 const mongoose = require('mongoose');
 
 const prescriptionSchema = new mongoose.Schema({
-  consultation: {
+  appointment: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Consultation',
-    required: true
-  },
-  patient: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  },
-  doctor: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'Appointment', 
     required: true
   },
   medications: [{
     name: { type: String, },
     dosage: { type: String,  },
+    frequency: { type : String},
     duration: { type: String, }
   }],
   issuedAt: {
@@ -26,7 +17,7 @@ const prescriptionSchema = new mongoose.Schema({
     default: Date.now
   },
   qrCode: String, // Chemin de l’image ou dataURL
-  signature: String // hash ou chemin de signature
+  
 });
 
 module.exports = mongoose.model('Prescription', prescriptionSchema);

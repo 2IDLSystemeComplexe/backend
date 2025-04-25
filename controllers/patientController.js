@@ -32,15 +32,29 @@ exports.getPatientById = async (req, res) => {
 // Create new patient
 exports.createPatient = async (req, res) => {
   try {
-    const { username, email, password, medicalHistory } = req.body;
+    const { username, email, password, medicalHistory, phone, localisation, age, gender } = req.body;
+
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newPatient = new Patient({ username, email, password: hashedPassword, medicalHistory });
+
+    const newPatient = new Patient({
+      username,
+      email,
+      password: hashedPassword,
+      medicalHistory,
+      phone,
+      localisation,  // Must contain { street, city }
+      age,
+      gender
+    });
+
     await newPatient.save();
+
     res.status(201).json(newPatient);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 };
+
 
 // Update patient
 exports.updatePatient = async (req, res) => {

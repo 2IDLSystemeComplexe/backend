@@ -2,13 +2,11 @@ const mongoose = require('mongoose');
 
 const appointmentSchema = new mongoose.Schema({
   doctor: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Doctor',
+    type: Object,
     required: true,
   },
   patient: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Patient',
+    type: Object,
     required: true,
   },
   date: {
@@ -16,7 +14,7 @@ const appointmentSchema = new mongoose.Schema({
     required: true,
   },
   time: {
-    type: String, // Exemple : "14:30"
+    type: String, // Example: "14:30"
     required: true,
   },
   mode: {
@@ -33,6 +31,10 @@ const appointmentSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  videoCallLink :{
+    type:String,
+    default:'https://meet.jit.si/consultation-'
+  }
 });
 
 const Appointment = mongoose.model('Appointment', appointmentSchema);

@@ -4,7 +4,9 @@ const Appointment = require('./Appointment'); // 👈 Import
 
 const doctorSchema = new mongoose.Schema({
   specialization: String,
-  licenseNumber: String,
+  image: { type: String }, 
+  degree: { type: String }, 
+  experience: { type: Number },
   phone: String,
   localisation: {
     street: { type: String, required: true },
@@ -14,10 +16,10 @@ const doctorSchema = new mongoose.Schema({
     day: {
       type: String,
       enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-      required: true
+      required: false
     },
-    start: { type: String, required: true },
-    end: { type: String, required: true }
+    start: { type: String, required: false },
+    end: { type: String, required: false }
   }]
 });
 
@@ -28,5 +30,7 @@ doctorSchema.pre('findOneAndDelete', async function(next) {
   }
   next();
 });
+
+
 
 module.exports = User.discriminator('doctor', doctorSchema);
